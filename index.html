@@ -20,7 +20,7 @@
     .line {
     fill: none;
     stroke: steelblue;
-    stroke-width: 1.5px;
+    stroke-width: 3.5px;
     }
 
     .bar
@@ -28,9 +28,14 @@
         fill: steelblue;     
     } 
 
+    .barPrevisto
+    {
+        fill: silver;     
+    } 
+
     .selecaoData
     {
-        background-color: cadetblue;
+        background-color: silver;
         color:whitesmoke;
         align:left;
     }
@@ -217,6 +222,11 @@
         font-size: 150px;
     }
   }  
+
+  .vbottom 
+  {    
+    vertical-align: bottom;
+  }
 </style>
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
@@ -252,15 +262,16 @@
 </div>
 
 <div id="emNumeros" class="container-fluid text-center">     
-   <div class="row">    
-      <div class="col-sm-6">
+   <div class="row vbottom">    
+      <div class="col-sm-6 ">
             <p><b>Número de casos nos últimos 12 meses</b></p>
-            <div id="GrafUltimos12Meses"></div>
+            <div id="GrafUltimos12Meses" class="vbottom"></div>
      </div>
-     <div class="col-sm-6">
+     <div class="col-sm-6 vbottom">
             <p><b>Os 5 bairros mais afetados</b></p>
-            <div id="GrafTop10Bairros"></div>
-     </div>     
+            <div id="GrafTop10Bairros" class="vbottom"></div>
+     </div> 
+  </div>
 </div>
 
 <div id="focoZika" class="container-fluid text-center">  
@@ -269,37 +280,37 @@
         <div class="col-sm-12">
             <div id="Calendario">
             <label>Para visualizar os focos do mosquito selecione o Ano:</label>
-            <select name="SelAno"class="selectControl" >
+            <select name="SelAno" id="SelAno" class="selectControl" >
             <option></option>
             <option>2015</option>
             <option>2016</option>
             </select>
             <label>Mês:</label>
-            <select name="SelMes" class="selectControl">
+            <select name="SelMes" id="SelMes" class="selectControl">
             <option></option>
-            <option>Janeiro</option>
-            <option>Fevereio</option>
-            <option>Março</option>
-            <option>Abril</option>
-            <option>Maio</option>
-            <option>Junho</option>
-            <option>Julho</option>
-            <option>Agosto</option>
-            <option>Setembro</option>
-            <option>Outubro</option>
-            <option>Novembro</option>
-            <option>Dezembro</option>
+            <option value="01">Janeiro</option>
+            <option value="02">Fevereiro</option>
+            <option value="03">Março</option>
+            <option value="04">Abril</option>
+            <option value="05">Maio</option>
+            <option value="06">Junho</option>
+            <option value="07">Julho</option>
+            <option value="08">Agosto</option>
+            <option value="09">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
             </select>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-12">
-            <div id="MapadoRio"><img src="https://raw.githubusercontent.com/marcelo-tibau/app-zika/master/Imagens/ZikaFevereiro.jpg" class="img-responsive img-rounded" width="100%"  /></div>
+            <div id="MapadoRio"><img id="MapadoFocoZikaRio" src="" class="img-responsive img-rounded" width="100%"  /></div>
         </div>    
     </div>
 </div>   
-</div>
+
 <div id="visaoBairro" class="container-fluid text-center">
     <div class="row selecaoData">
         <div class="col-sm-12">
@@ -314,7 +325,7 @@
     <div>
     <div class="row">
         <div class="col-sm-12">
-            <div id="GrafVisaoBairro"><svg width="960" height="500"></svg></div>
+            <div><svg id="GrafVisaoBairro" width="990" height="500"></svg></div>
         </div>    
     </div>
 </div>   
@@ -373,25 +384,25 @@ $(document).ready(function(){
 
 //Script Gráfico Número de Casos por mês na Cidade
 var dataNumCasosMes =[
-            {"Mes": "Jan-16", "NumCasos" : 6665 },
-            {"Mes": "Fev-16", "NumCasos" : 8194 },
-            {"Mes": "Mar-16", "NumCasos" : 6160 },
-            {"Mes": "Abr-16", "NumCasos" : 5951 },
-            {"Mes": "Mai-16", "NumCasos" : 3815 },
-            {"Mes": "Jun-16", "NumCasos" : 1175 },
-            {"Mes": "Jul-16", "NumCasos" : 378 },
-            {"Mes": "Ago-16", "NumCasos" : 305 },
-            {"Mes": "Set-16", "NumCasos" : 75 },
-            {"Mes": "Out-16", "NumCasos" : 35 },
-            {"Mes": "Nov-16", "NumCasos" : 2208 },
-            {"Mes": "Dez-16", "NumCasos" : 2378 },            
+            {"Mes": "Jan-16", "NumCasos" : 6665, "Previsto" : "N"},
+            {"Mes": "Fev-16", "NumCasos" : 8194, "Previsto" : "N"},
+            {"Mes": "Mar-16", "NumCasos" : 6160, "Previsto" : "N"},
+            {"Mes": "Abr-16", "NumCasos" : 5951, "Previsto" : "N"},
+            {"Mes": "Mai-16", "NumCasos" : 3815, "Previsto" : "N"},
+            {"Mes": "Jun-16", "NumCasos" : 1175, "Previsto" : "N"},
+            {"Mes": "Jul-16", "NumCasos" : 378,  "Previsto" : "N"},
+            {"Mes": "Ago-16", "NumCasos" : 305,  "Previsto" : "N"},
+            {"Mes": "Set-16", "NumCasos" : 75,   "Previsto" : "N"},
+            {"Mes": "Out-16", "NumCasos" : 35,   "Previsto" : "N"},
+            {"Mes": "Nov-16", "NumCasos" : 2208, "Previsto" : "S"},
+            {"Mes": "Dez-16", "NumCasos" : 2378, "Previsto" : "S"}            
         ]; 
 
 
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 40, bottom: 20, left: 40},
-    width = 500 - margin.left - margin.right,
-    height = 300 - margin.top - margin.bottom;
+    width = 550 - margin.left - margin.right,
+    height = 320 - margin.top - margin.bottom;
 
 // set the ranges
 var x = d3.scaleBand()
@@ -401,6 +412,7 @@ var y = d3.scaleLinear()
           .range([height, 0]);
           
 // append the svg object to the body of the pNumCasos
+
 
 // append a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
@@ -429,7 +441,7 @@ var svg = d3.select("#GrafUltimos12Meses").append("svg")
       .style("font-size", "12px" )
       .data(dataNumCasosMes)
     .enter().append("rect")
-      .attr("class", "bar")
+      .attr("class", function(d) {if (d.Previsto == "N") return "bar"; else return "barPrevisto";})
       .attr("x", function(d) { return x(d.Mes); })
       .attr("width", x.bandwidth())
       .attr("y", function(d) { return y(d.NumCasos); })
@@ -519,16 +531,40 @@ var svg = d3.select("#GrafTop10Bairros").append("svg")
 </script>
 
 <script>
+//Mapa com os focos da Zika
+
+var selAno = d3.select("#SelAno")
+  .on('change',SelFocoZikaOnchange);
+
+var selMes = d3.select("#SelMes")
+  .on('change',SelFocoZikaOnchange);
+
+//Função que alterar a imagem 
+function SelFocoZikaOnchange()
+{
+    ano = d3.select('#SelAno').property('value');
+    mes = d3.select('#SelMes').property('value');
+
+    if (ano != '' && mes != '')
+    {    
+        var imagemFocoZika = d3.select("#MapadoFocoZikaRio")
+        .attr("src","https://raw.githubusercontent.com/marcelo-tibau/app-zika/master/Imagens/" + ano + mes +"FocoZika.jpg");
+    }
+
+    
+}
+</script>
+
+<script>
 
 //Gráfico de linha com casos de Zika por Bairro
 
 var dataBairros = [{"Bairro":"ABOLICAO"},{"Bairro":"ACARI"},{"Bairro":"AGUA SANTA"},{"Bairro":"ANCHIETA"},{"Bairro":"ANDARAI"},{"Bairro":"ANIL"},{"Bairro":"BANCARIOS"},{"Bairro":"BANGU"},{"Bairro":"BARRA DA TIJUCA"},{"Bairro":"BARRA DE GUARATIBA"},{"Bairro":"BARROS FILHO"},{"Bairro":"BENFICA"},{"Bairro":"BENTO RIBEIRO"},{"Bairro":"BONSUCESSO"},{"Bairro":"BOTAFOGO"},{"Bairro":"BRAS DE PINA"},{"Bairro":"BRAS DE PINA"},{"Bairro":"CACHAMBI"},{"Bairro":"CACUIA"},{"Bairro":"CAJU"},{"Bairro":"CAMORIM"},{"Bairro":"CAMPINHO"},{"Bairro":"CAMPO DOS AFONSOS"},{"Bairro":"CAMPO GRANDE"},{"Bairro":"CASCADURA"},{"Bairro":"CATETE"},{"Bairro":"CATUMBI"},{"Bairro":"CAVALCANTI"},{"Bairro":"CENTRO"},{"Bairro":"CIDADE DE DEUS"},{"Bairro":"CIDADE NOVA"},{"Bairro":"CIDADE UNIVERSITARIA"},{"Bairro":"COCOTA"},{"Bairro":"COELHO NETO"},{"Bairro":"COLEGIO"},{"Bairro":"COMPLEXO DO ALEMAO"},{"Bairro":"COPACABANA"},{"Bairro":"CORDOVIL"},{"Bairro":"COSME VELHO"},{"Bairro":"COSMOS"},{"Bairro":"COSTA BARROS"},{"Bairro":"CURICICA"},{"Bairro":"DEL CASTILHO"},{"Bairro":"DEODORO"},{"Bairro":"ENCANTADO"},{"Bairro":"ENGENHEIRO LEAL"},{"Bairro":"ENGENHO DE DENTRO"},{"Bairro":"ENGENHO NOVO"},{"Bairro":"ESTACIO"},{"Bairro":"FLAMENGO"},{"Bairro":"GALEAO"},{"Bairro":"GAMBOA"},{"Bairro":"GARDENIA AZUL"},{"Bairro":"GAVEA"},{"Bairro":"GLORIA"},{"Bairro":"GRAJAU"},{"Bairro":"GRUMARI"},{"Bairro":"GUADALUPE"},{"Bairro":"GUARATIBA"},{"Bairro":"HIGIENOPOLIS"},{"Bairro":"HONORIO GURGEL"},{"Bairro":"HUMAITA"},{"Bairro":"INHAUMA"},{"Bairro":"IPANEMA"},{"Bairro":"IRAJA"},{"Bairro":"ITANHANGA"},{"Bairro":"JACARE"},{"Bairro":"JACAREPAGUA"},{"Bairro":"JACAREZINHO"},{"Bairro":"JARDIM AMERICA"},{"Bairro":"JARDIM BOTANICO"},{"Bairro":"JARDIM CARIOCA"},{"Bairro":"JARDIM GUANABARA"},{"Bairro":"JARDIM SULACAP"},{"Bairro":"JOA"},{"Bairro":"LAGOA"},{"Bairro":"LARANJEIRAS"},{"Bairro":"LEBLON"},{"Bairro":"LEME"},{"Bairro":"LINS DE VASCONCELOS"},{"Bairro":"MADUREIRA"},{"Bairro":"MAGALHAES BASTOS"},{"Bairro":"MANGUEIRA"},{"Bairro":"MANGUINHOS"},{"Bairro":"MARACANA"},{"Bairro":"MARECHAL HERMES"},{"Bairro":"MARIA DA GRACA"},{"Bairro":"MEIER"},{"Bairro":"MONERO"},{"Bairro":"OLARIA"},{"Bairro":"OSWALDO CRUZ"},{"Bairro":"PACIENCIA"},{"Bairro":"PADRE MIGUEL"},{"Bairro":"PAQUETA"},{"Bairro":"PARADA DE LUCAS"},{"Bairro":"PARQUE ANCHIETA"},{"Bairro":"PARQUE COLUMBIA"},{"Bairro":"PAVUNA"},{"Bairro":"PECHINCHA"},{"Bairro":"PEDRA DE GUARATIBA"},{"Bairro":"PENHA"},{"Bairro":"PENHA CIRCULAR"},{"Bairro":"PIEDADE"},{"Bairro":"PILARES"},{"Bairro":"PITANGUEIRAS"},{"Bairro":"PORTUGUESA"},{"Bairro":"PRACA DA BANDEIRA"},{"Bairro":"PRACA SECA"},{"Bairro":"QUINTINO BOCAIUVA"},{"Bairro":"RAMOS"},{"Bairro":"REALENGO"},{"Bairro":"RECREIO DOS BANDEIRANTES"},{"Bairro":"RIACHUELO"},{"Bairro":"RIBEIRA"},{"Bairro":"RICARDO DE ALBUQUERQUE"},{"Bairro":"RIO COMPRIDO"},{"Bairro":"ROCHA"},{"Bairro":"ROCHA MIRANDA"},{"Bairro":"ROCINHA"},{"Bairro":"SAMPAIO"},{"Bairro":"SANTA CRUZ"},{"Bairro":"SANTA TERESA"},{"Bairro":"SANTISSIMO"},{"Bairro":"SANTO CRISTO"},{"Bairro":"SAO CONRADO"},{"Bairro":"SAO CRISTOVAO"},{"Bairro":"SAO FRANCISCO XAVIER"},{"Bairro":"SAUDE"},{"Bairro":"SENADOR CAMARA"},{"Bairro":"SENADOR VASCONCELOS"},{"Bairro":"SEPETIBA"},{"Bairro":"TANQUE"},{"Bairro":"TAQUARA"},{"Bairro":"TAUA"},{"Bairro":"TIJUCA"},{"Bairro":"TODOS OS SANTOS"},{"Bairro":"TOMAS COELHO"},{"Bairro":"TURIACU"},{"Bairro":"URCA"},{"Bairro":"VARGEM GRANDE"},{"Bairro":"VARGEM PEQUENA"},{"Bairro":"VAZ LOBO"},{"Bairro":"VICENTE DE CARVALHO"},{"Bairro":"VIDIGAL"},{"Bairro":"VIGARIO GERAL"},{"Bairro":"VILA DE PENHA"},{"Bairro":"VILA ISABEL"},{"Bairro":"VILA KOSMOS"},{"Bairro":"VILA MILITAR"},{"Bairro":"VILA VALQUEIRE"},{"Bairro":"VISTA ALEGRE"},{"Bairro":"ZUMBI"}];
 
-var dataCasosPrevistoReal = [{"Data":20151005,"Bairro":"CAMPO GRANDE","Previsto":28.0,"Real":10.0},{"Data":20151012,"Bairro":"CAMPO GRANDE","Previsto":28.0,"Real":10.0},{"Data":20151019,"Bairro":"CAMPO GRANDE","Previsto":27.0,"Real":10.0},{"Data":20151026,"Bairro":"CAMPO GRANDE","Previsto":13.0,"Real":10.0},{"Data":20151102,"Bairro":"CAMPO GRANDE","Previsto":15.0,"Real":12.0},{"Data": 20151109,"Bairro":"CAMPO GRANDE","Previsto":12.0,"Real":1.0}];
-
-var Colunas = ['Data','Real', 'Previsto']
+var Colunas = ['Data','Bairro','Previsto','Real']
 
 var selBairro = d3.select("#SelBairro")
+  .on('change',SelBairroOnchange)
   .selectAll('option')
 	.data(dataBairros).enter()
 	.append('option')
@@ -541,26 +577,25 @@ var selBairro = d3.select("#SelBairro")
     g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 */
 
+//Função que gera o gráfico apartir da seleção de um Bairro
+function SelBairroOnchange() {
+
+d3.selectAll("#GrafVisaoBairro > *").remove();
 
 var margin = {top: 20, right: 80, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-
-// append the svg object to the body of the pNumCasos
-
 // append a 'group' element to 'svg'
 // moves the 'group' element to the top left margin
-var svg = d3.select("#GrafVisaoBairro").append("svg")
-    .attr("width", width - margin.left - margin.right)
-    .attr("height", height - margin.top - margin.bottom)
-  /*.append("g")
-    .attr("transform", 
-          "translate(" + margin.left + "," + margin.top + ")");*/
- g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+var svg = d3.select("#GrafVisaoBairro"),
+    margin = {top: 20, right: 80, bottom: 30, left: 50},
+    width = svg.attr("width") - margin.left - margin.right,
+    height = svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-var parseTime = d3.timeParse("%Y%m%d");
+var parseTime = d3.timeParse("%Y-%m-%d");
 
 var x = d3.scaleTime().range([0, width]),
     y = d3.scaleLinear().range([height, 0]),
@@ -571,23 +606,36 @@ var line = d3.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return y(d.temperature); });
 
-//d3.tsv("data.tsv", type, function(error, data) {
-  //if (error) throw error;
+selectBairro = d3.select('#SelBairro').property('value')
 
-  //var cities = data.columns.slice(1).map(function(id) {
-    var cities = Colunas.slice(1).map(function(id) {
+d3.json("http://localhost:8080/Dados/CasosPrevistosReais.json", function(error, data) {  
+  if (error) throw error;
+    
+    data = data.filter(function(n) { return n.Bairro == selectBairro; });
+
+    data.forEach(function(d) 
+    {
+        d.Data = parseTime(d.Data);
+        d.Previsto = +d.Previsto;
+        d.Real = +d.Real;
+    });
+
+    //data.Data = parseTime(data.Data);
+    //for (var i = 2, n = data.columns.length, c; i < n; ++i) data[c = data.columns[i]] = +data[c];
+
+    //var cities = data.columns.slice(1).map(function(id) {
+    var cities = Colunas.slice(2).map(function(id) {
     return {
-      id: id,
-      values: dataCasosPrevistoReal.map(function(d) {
-        return {date: d.Data, temperature: d[id]};
-      })
-    };
+        id: id,
+        values: data.map(function(d) {
+            return {date: d.Data, temperature: d[id]};
+        })
+     };
   });
 
-  x.domain(d3.extent(dataCasosPrevistoReal, function(d) { return d.data; }));
-
-  y.domain([
-    d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.temperature; }); }),
+  x.domain(d3.extent(data, function(d) { return d.Data; }));
+  
+  y.domain([d3.min(cities, function(c) { return d3.min(c.values, function(d) { return d.temperature; }); }),
     d3.max(cities, function(c) { return d3.max(c.values, function(d) { return d.temperature; }); })
   ]);
 
@@ -606,7 +654,7 @@ var line = d3.line()
       .attr("y", 6)
       .attr("dy", "0.71em")
       .attr("fill", "#000")
-      .text("Temperature, ºF");
+      .text("Casos de Zika");
 
   var city = g.selectAll(".city")
     .data(cities)
@@ -614,7 +662,7 @@ var line = d3.line()
       .attr("class", "city");
 
   city.append("path")
-      //.filter(function(d) { return d.close < 40000 })
+      //.filter(function(d) { return d.Bairro = 'CAMPO GRANDE' })
       .attr("class", "line")
       .attr("d", function(d) { return line(d.values); })
       .style("stroke", function(d) { return z(d.id); });
@@ -627,14 +675,15 @@ var line = d3.line()
       .style("font", "10px sans-serif")
       .text(function(d) { return d.id; });
 
+ });
 
-//});
-
-function type(d, _, columns) {
-  d.date = parseTime(d.date);
-  for (var i = 1, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
-  return d;
 }
+//function type(d, _, columns) {
+  //alert(d);
+  //d.Data = parseTime(d.Data);
+  //for (var i = 2, n = columns.length, c; i < n; ++i) d[c = columns[i]] = +d[c];
+  //return d;
+//}
 
 </script>
 
