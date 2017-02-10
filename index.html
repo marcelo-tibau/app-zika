@@ -608,7 +608,7 @@ var line = d3.line()
 
 selectBairro = d3.select('#SelBairro').property('value')
 
-d3.json("http://localhost:8080/Dados/CasosPrevistosReais.json", function(error, data) {  
+d3.json("https://raw.githubusercontent.com/marcelo-tibau/app-zika/master/Dados/CasosPrevistosReais.json", function(error, data) {  
   if (error) throw error;
     
     data = data.filter(function(n) { return n.Bairro == selectBairro; });
